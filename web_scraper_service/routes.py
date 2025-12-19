@@ -7,7 +7,7 @@ from pydantic import BaseModel
 from datetime import datetime
 
 from shared.database import get_db
-from admin_service.models import Tender
+from shared.models import Tender
 from web_scraper_service.scraper_manager import ScraperManager
 from web_scraper_service.dynamic_spider_generator import DynamicSpiderGenerator
 
