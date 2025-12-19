@@ -4,7 +4,7 @@ import hashlib
 from typing import Optional, Tuple
 from sqlalchemy.orm import Session
 
-from factory_parsers.shared.logger import logger
+fromshared.logger import logger
 from .models import NormalizedTender
 
 

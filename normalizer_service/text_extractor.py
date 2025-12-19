@@ -5,7 +5,7 @@ import tempfile
 from typing import Optional
 from pathlib import Path
 
-from factory_parsers.shared.logger import logger
+fromshared.logger import logger
 
 
 class TextExtractor:

@@ -3,7 +3,7 @@
 from datetime import datetime
 from sqlalchemy import Column, DateTime, Integer, String, Text, Float, JSON, Boolean, Index
 
-from factory_parsers.shared.database import Base
+fromshared.database import Base
 
 
 class NormalizedTender(Base):

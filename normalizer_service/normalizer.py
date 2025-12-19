@@ -5,7 +5,7 @@ from typing import Dict, Any, Optional, Tuple
 from datetime import datetime
 from sqlalchemy.orm import Session
 
-from factory_parsers.shared.logger import logger
+fromshared.logger import logger
 from .models import NormalizedTender, NormalizationLog
 from .field_mapper import FieldMapper
 from .duplicate_detector import DuplicateDetector

@@ -3,12 +3,12 @@
 from datetime import datetime
 from sqlalchemy.orm import Session
 
-from factory_parsers.scheduler_service.celery_app import task
-from factory_parsers.shared.database import SessionLocal
-from factory_parsers.shared.logger import logger
-from factory_parsers.normalizer_service.normalizer import TenderNormalizer
-from factory_parsers.normalizer_service.text_extractor import TextExtractor
-from factory_parsers.normalizer_service.repositories import NormalizedTenderRepository
+fromscheduler_service.celery_app import task
+fromshared.database import SessionLocal
+fromshared.logger import logger
+fromnormalizer_service.normalizer import TenderNormalizer
+fromnormalizer_service.text_extractor import TextExtractor
+fromnormalizer_service.repositories import NormalizedTenderRepository
 
 
 @task(name="normalize_tender", bind=True, max_retries=3)

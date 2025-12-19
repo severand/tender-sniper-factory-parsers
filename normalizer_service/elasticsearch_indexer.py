@@ -2,8 +2,8 @@
 
 from typing import Dict, Any, Optional
 
-from factory_parsers.shared.logger import logger
-from factory_parsers.search_service.elasticsearch_client import ElasticsearchClient
+fromshared.logger import logger
+fromsearch_service.elasticsearch_client import ElasticsearchClient
 from .models import NormalizedTender
 
 

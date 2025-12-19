@@ -5,8 +5,8 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from pydantic import BaseModel
 
-from factory_parsers.shared.database import get_db
-from factory_parsers.normalizer_service.repositories import (
+fromshared.database import get_db
+fromnormalizer_service.repositories import (
     NormalizedTenderRepository,
     NormalizationLogRepository,
 )
