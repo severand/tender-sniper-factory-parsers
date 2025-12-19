@@ -4,8 +4,8 @@ from typing import List, Dict, Any, Optional
 import scrapy
 from scrapy.http import Response
 
-from factory_parsers.shared.logger import logger
-from factory_parsers.admin_service.models import FieldMapping
+from shared.logger import logger
+from admin_service.models import FieldMapping
 
 
 class BaseTenderSpider(scrapy.Spider):
