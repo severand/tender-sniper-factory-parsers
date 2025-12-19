@@ -4,10 +4,10 @@ from typing import Dict, List, Optional
 from sqlalchemy.orm import Session
 from scrapy.crawler import CrawlerProcess
 
-from factory_parsers.shared.logger import logger
-from factory_parsers.admin_service.repositories import PlatformRepository, SearchRuleRepository
-from factory_parsers.web_scraper_service.dynamic_spider_generator import DynamicSpiderGenerator
-from factory_parsers.scheduler_service.celery_app import task
+from shared.logger import logger
+from admin_service.repositories import PlatformRepository, SearchRuleRepository
+from web_scraper_service.dynamic_spider_generator import DynamicSpiderGenerator
+from scheduler_service.celery_app import task
 
 
 class ScraperManager:
@@ -131,7 +131,7 @@ def run_scraper_for_platform(platform_id: int, search_rule_id: int) -> bool:
     Returns:
         Success status
     """
-    from factory_parsers.shared.database import SessionLocal
+    from shared.database import SessionLocal
     
     db = SessionLocal()
     try:
@@ -148,7 +148,7 @@ def run_all_scrapers() -> Dict[str, int]:
     Returns:
         Statistics dict
     """
-    from factory_parsers.shared.database import SessionLocal
+    from shared.database import SessionLocal
     
     db = SessionLocal()
     try:
