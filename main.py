@@ -5,14 +5,14 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.openapi.utils import get_openapi
 from fastapi.responses import PlainTextResponse
 
-from factory_parsers.shared.config import get_settings
-from factory_parsers.shared.logger import logger
-from factory_parsers.admin_service.routes import router as admin_router
-from factory_parsers.web_scraper_service.routes import router as scraper_router
-#from factory_parsers.normalizer_service.routes import router as normalizer_router
-#from factory_parsers.search_service.routes import router as search_router
-#from factory_parsers.analytics_service.routes import router as analytics_router
-#from factory_parsers.monitoring.routes import router as monitoring_router
+from shared.config import get_settings
+from shared.logger import logger
+from admin_service.routes import router as admin_router
+from web_scraper_service.routes import router as scraper_router
+#from normalizer_service.routes import router as normalizer_router
+#from search_service.routes import router as search_router
+#from analytics_service.routes import router as analytics_router
+#from monitoring.routes import router as monitoring_router
 
 settings = get_settings()
 
@@ -114,8 +114,8 @@ def read_root():
         "docs_url": "/docs",
         "redoc_url": "/redoc",
         "openapi_url": "/openapi.json",
-        "health_url": "/monitoring/health",
-        "metrics_url": "/monitoring/metrics",
+        "health_url": "/health",
+        "metrics_url": "/metrics",
     }
 
 
@@ -170,8 +170,8 @@ async def startup_event():
     """Application startup handler"""
     
     # Создаём таблицы БД при старте (для SQLAlchemy)
-    from factory_parsers.shared.database import engine, Base
-    from factory_parsers.admin_service.models import Platform, SearchRule, FieldMapping
+    from shared.database import engine, Base
+    from admin_service.models import Platform, SearchRule, FieldMapping
     
     # Импортируем модели, чтобы они зарегистрировались в Base.metadata
     Base.metadata.create_all(bind=engine)
@@ -191,7 +191,7 @@ async def shutdown_event():
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(
-        "factory_parsers.main:app",
+        "main:app",
         host=settings.api_host,
         port=settings.api_port,
         reload=settings.debug,
