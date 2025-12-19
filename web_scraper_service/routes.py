@@ -1,10 +1,13 @@
 """FastAPI routes for web scraper service"""
 
-from fastapi import APIRouter, Depends, HTTPException, status
+from typing import List, Optional
+from fastapi import APIRouter, Depends, HTTPException, status, Query
 from sqlalchemy.orm import Session
 from pydantic import BaseModel
+from datetime import datetime
 
 from shared.database import get_db
+from shared.models import Tender
 from web_scraper_service.scraper_manager import ScraperManager
 from web_scraper_service.dynamic_spider_generator import DynamicSpiderGenerator
 
@@ -22,6 +25,19 @@ class SpiderListResponse(BaseModel):
     rule_id: int
     platform: str
     rule: str
+
+
+class TenderResponse(BaseModel):
+    id: int
+    platform_id: int
+    title: str
+    url: str
+    price: float = None
+    published_date: datetime = None
+    created_at: datetime
+    
+    class Config:
+        from_attributes = True
 
 
 @router.post("/run")
@@ -57,6 +73,24 @@ def run_all_scrapers(db: Session = Depends(get_db)):
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Scraper failed: {str(e)}"
         )
+
+
+@router.get("/results", response_model=List[TenderResponse])
+def get_scraper_results(
+    platform_id: Optional[int] = Query(None, description="Filter by platform ID"),
+    limit: int = Query(10, ge=1, le=100, description="Number of results to return"),
+    offset: int = Query(0, ge=0, description="Offset for pagination"),
+    db: Session = Depends(get_db)
+):
+    """Get scraped tender results"""
+    query = db.query(Tender).order_by(Tender.created_at.desc())
+    
+    if platform_id:
+        query = query.filter(Tender.platform_id == platform_id)
+    
+    tenders = query.offset(offset).limit(limit).all()
+    
+    return tenders
 
 
 @router.get("/available-spiders")
