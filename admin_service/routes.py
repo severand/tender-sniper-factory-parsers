@@ -6,7 +6,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from pydantic import BaseModel
 
-from factory_parsers.shared.database import get_db
+from shared.database import get_db
 from .models import Platform, SearchRule, FieldMapping
 from .repositories import PlatformRepository, SearchRuleRepository, FieldMappingRepository
 
@@ -42,8 +42,8 @@ class PlatformResponse(BaseModel):
     code: str
     url: str
     is_active: bool
-    created_at: datetime  # Fix: datetime вместо str
-    updated_at: datetime  # Добавлено для полноты
+    created_at: datetime
+    updated_at: datetime
     
     class Config:
         from_attributes = True
