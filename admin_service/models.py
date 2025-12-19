@@ -6,7 +6,7 @@ from typing import Optional
 from sqlalchemy import Column, DateTime, Integer, String, Text, Boolean, ForeignKey, JSON
 from sqlalchemy.orm import relationship
 
-from factory_parsers.shared.database import Base
+from shared.database import Base
 
 
 class Platform(Base):
