@@ -3,14 +3,14 @@
 from typing import Type
 from sqlalchemy.orm import Session
 
-from factory_parsers.shared.logger import logger
-from factory_parsers.admin_service.models import Platform, SearchRule, FieldMapping
-from factory_parsers.admin_service.repositories import (
+from shared.logger import logger
+from admin_service.models import Platform, SearchRule, FieldMapping
+from admin_service.repositories import (
     PlatformRepository,
     SearchRuleRepository,
     FieldMappingRepository,
 )
-from factory_parsers.web_scraper_service.base_spider import BaseTenderSpider
+from web_scraper_service.base_spider import BaseTenderSpider
 
 
 class DynamicSpiderGenerator:
