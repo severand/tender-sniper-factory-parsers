@@ -4,9 +4,9 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from pydantic import BaseModel
 
-from factory_parsers.shared.database import get_db
-from factory_parsers.web_scraper_service.scraper_manager import ScraperManager
-from factory_parsers.web_scraper_service.dynamic_spider_generator import DynamicSpiderGenerator
+from shared.database import get_db
+from web_scraper_service.scraper_manager import ScraperManager
+from web_scraper_service.dynamic_spider_generator import DynamicSpiderGenerator
 
 router = APIRouter(prefix="/scrapers", tags=["scrapers"])
 
