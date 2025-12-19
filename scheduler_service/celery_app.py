@@ -3,7 +3,7 @@
 from celery import Celery
 from celery.schedules import crontab
 
-from factory_parsers.shared.config import get_settings
+from shared.config import get_settings
 
 settings = get_settings()
 
@@ -30,7 +30,7 @@ celery_app.conf.update(
 celery_app.conf.beat_schedule = {
     # Platform status check every minute
     "check-platforms-every-minute": {
-        "task": "factory_parsers.scheduler_service.tasks.check_platform_status",
+        "task": "scheduler_service.tasks.check_platform_status",
         "schedule": crontab(minute="*"),
     },
 }
