@@ -65,7 +65,6 @@ class FieldMappingCreate(BaseModel):
     regex_pattern: str = None
     attribute: str = None
     required: bool = False
-    search_rule_id: int = None  # НОВОЕ: опциональная привязка к search_rule
 
 
 # Platform endpoints
@@ -148,29 +147,14 @@ def list_search_rules(platform_id: int, active_only: bool = False, db: Session =
     return repo.get_by_platform(platform_id, active_only=active_only)
 
 
-# FieldMapping endpoints
-@router.post("/platforms/{platform_id}/field-mappings")
-def create_field_mapping(
-    platform_id: int,
-    mapping: FieldMappingCreate,
-    db: Session = Depends(get_db)
-):
-    """Create field mapping for platform (deprecated - use search-rules endpoint)"""
-    platform_repo = PlatformRepository(db)
-    if not platform_repo.get_by_id(platform_id):
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Platform not found")
-    
-    repo = FieldMappingRepository(db)
-    return repo.create(platform_id, **mapping.dict())
-
-
+# FieldMapping endpoints - ТОЛЬКО ДЛЯ SEARCH RULES
 @router.post("/search-rules/{search_rule_id}/field-mappings")
 def create_field_mapping_for_rule(
     search_rule_id: int,
     mapping: FieldMappingCreate,
     db: Session = Depends(get_db)
 ):
-    """Create field mapping for search rule (RECOMMENDED)"""
+    """Create field mapping for search rule"""
     rule_repo = SearchRuleRepository(db)
     rule = rule_repo.get_by_id(search_rule_id)
     if not rule:
@@ -180,15 +164,8 @@ def create_field_mapping_for_rule(
     return mapping_repo.create(
         platform_id=rule.platform_id,
         search_rule_id=search_rule_id,
-        **mapping.dict(exclude={'search_rule_id'})
+        **mapping.dict()
     )
-
-
-@router.get("/platforms/{platform_id}/field-mappings")
-def list_field_mappings(platform_id: int, db: Session = Depends(get_db)):
-    """List field mappings for platform"""
-    repo = FieldMappingRepository(db)
-    return repo.get_by_platform(platform_id)
 
 
 @router.get("/search-rules/{search_rule_id}/field-mappings")
