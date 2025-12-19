@@ -65,6 +65,7 @@ class FieldMappingCreate(BaseModel):
     regex_pattern: str = None
     attribute: str = None
     required: bool = False
+    search_rule_id: int = None  # НОВОЕ: опциональная привязка к search_rule
 
 
 # Platform endpoints
@@ -154,7 +155,7 @@ def create_field_mapping(
     mapping: FieldMappingCreate,
     db: Session = Depends(get_db)
 ):
-    """Create field mapping for platform"""
+    """Create field mapping for platform (deprecated - use search-rules endpoint)"""
     platform_repo = PlatformRepository(db)
     if not platform_repo.get_by_id(platform_id):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Platform not found")
@@ -163,8 +164,35 @@ def create_field_mapping(
     return repo.create(platform_id, **mapping.dict())
 
 
+@router.post("/search-rules/{search_rule_id}/field-mappings")
+def create_field_mapping_for_rule(
+    search_rule_id: int,
+    mapping: FieldMappingCreate,
+    db: Session = Depends(get_db)
+):
+    """Create field mapping for search rule (RECOMMENDED)"""
+    rule_repo = SearchRuleRepository(db)
+    rule = rule_repo.get_by_id(search_rule_id)
+    if not rule:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="SearchRule not found")
+    
+    mapping_repo = FieldMappingRepository(db)
+    return mapping_repo.create(
+        platform_id=rule.platform_id,
+        search_rule_id=search_rule_id,
+        **mapping.dict(exclude={'search_rule_id'})
+    )
+
+
 @router.get("/platforms/{platform_id}/field-mappings")
 def list_field_mappings(platform_id: int, db: Session = Depends(get_db)):
     """List field mappings for platform"""
     repo = FieldMappingRepository(db)
     return repo.get_by_platform(platform_id)
+
+
+@router.get("/search-rules/{search_rule_id}/field-mappings")
+def list_field_mappings_for_rule(search_rule_id: int, db: Session = Depends(get_db)):
+    """List field mappings for search rule"""
+    repo = FieldMappingRepository(db)
+    return repo.get_by_search_rule(search_rule_id)
